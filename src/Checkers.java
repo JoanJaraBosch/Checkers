@@ -160,8 +160,8 @@ public class Checkers {
         boolean retorn = true;
 
         if(white.getPiece().getNumberPieces()==0 || black.getPiece().getNumberPieces()==0 ||
-                (black.getPiece().getNumberPieces()==black.getPiece().getNumberPieces() &&
-                        white.getPiece().getNumberPieces()==white.getPiece().getNumberPieces())) retorn = false;
+                (black.getPiece().getNumberPieces()==black.getPiece().getBloqiedPieces() &&
+                        white.getPiece().getNumberPieces()==white.getPiece().getBloqiedPieces())) retorn = false;
 
         return retorn;
     }
