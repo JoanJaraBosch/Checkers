@@ -32,11 +32,11 @@ public class Checkers {
             board[posX][posY]="B";
             int auxX = posXBefore-posX;
             int auxY = posYBefore-posY;
-            if(auxX!=1){
+            if(auxX!=-1){
                 if(auxY==-2){
-                    board[posX-1][posY+1]="?";
-                }else{
                     board[posX-1][posY-1]="?";
+                }else{
+                    board[posX-1][posY+1]="?";
                 }
                 white.getPiece().setNumberPieces(white.getPiece().getNumberPieces()-1);
             }
@@ -47,14 +47,122 @@ public class Checkers {
             int auxY = posYBefore-posY;
             if(auxX!=1){
                 if(auxY==-2){
-                    board[posX-1][posY+1]="?";
+                    board[posX+1][posY-1]="?";
                 }else{
-                    board[posX-1][posY-1]="?";
+                    board[posX+1][posY+1]="?";
                 }
                 black.getPiece().setNumberPieces(black.getPiece().getNumberPieces()-1);
             }
         }
 
         //contar blocades blanques i negres
+        bloquedCount(board);
+    }
+
+    public void bloquedCount(String[][] board){
+        black.getPiece().setBloqiedPieces(0);
+        white.getPiece().setBloqiedPieces(0);
+        boolean dreta=false, esquerra=false;
+        for(int i=0; i<8;i++){
+            for(int j =0;j<8;j++){
+                if(board[i][j].equals("B")){
+                    if(i+1>7){
+                        black.getPiece().setNumberPieces(black.getPiece().getNumberPieces()-1);
+                        black.getPiece().setQueenPieces(black.getPiece().getQueenPieces()+1);
+                    }else{
+                        if(i+2<=7) {
+                            if (j + 1 > 7) {
+                                dreta = true;
+                            } else if (j + 1 <= 7) {
+                                if (board[i + 1][j + 1].equals("B") || board[i + 1][j + 1].equals("W")) {
+                                    if (j + 2 > 7) {
+                                        dreta = true;
+                                    } else {
+                                        if (board[i + 2][j + 2].equals("B") || board[i + 2][j + 2].equals("W")) {
+                                            dreta = true;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (j - 1 < 0) {
+                                esquerra = true;
+                            } else if (j - 1 >= 0) {
+                                if (board[i + 1][j - 1].equals("B") || board[i + 1][j - 1].equals("W")) {
+                                    if (j - 2 < 0) {
+                                        esquerra = true;
+                                    } else {
+                                        if (board[i + 2][j - 2].equals("B") || board[i + 2][j - 2].equals("W")) {
+                                            esquerra = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }else{
+                            black.getPiece().setBloqiedPieces(black.getPiece().getBloqiedPieces()+1);
+                        }
+
+                        if(esquerra && dreta){
+                            black.getPiece().setBloqiedPieces(black.getPiece().getBloqiedPieces()+1);
+                        }
+                        esquerra=false;
+                        dreta=false;
+                    }
+                }else if(board[i][j].equals("W")){
+                    if(i-1<0){
+                        white.getPiece().setNumberPieces(white.getPiece().getNumberPieces()-1);
+                        white.getPiece().setQueenPieces(white.getPiece().getQueenPieces()+1);
+                    }else{
+                        if(i-2>=0) {
+                            if (j + 1 > 7) {
+                                dreta = true;
+                            } else if (j + 1 <= 7) {
+                                if (board[i - 1][j + 1].equals("B") || board[i - 1][j + 1].equals("W")) {
+                                    if (j + 2 > 7) {
+                                        dreta = true;
+                                    } else {
+                                        if (board[i - 2][j + 2].equals("B") || board[i - 2][j + 2].equals("W")) {
+                                            dreta = true;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (j - 1 < 0) {
+                                esquerra = true;
+                            } else if (j - 1 >= 0) {
+                                if (board[i - 1][j - 1].equals("B") || board[i - 1][j - 1].equals("W")) {
+                                    if (j - 2 < 0) {
+                                        esquerra = true;
+                                    } else {
+                                        if (board[i - 2][j - 2].equals("B") || board[i - 2][j - 2].equals("W")) {
+                                            esquerra = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }else{
+                            white.getPiece().setBloqiedPieces(white.getPiece().getBloqiedPieces()+1);
+                        }
+
+                        if(esquerra && dreta){
+                            white.getPiece().setBloqiedPieces(white.getPiece().getBloqiedPieces()+1);
+                        }
+                        esquerra=false;
+                        dreta=false;
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean notEnd(){
+        boolean retorn = true;
+
+        if(white.getPiece().getNumberPieces()==0 || black.getPiece().getNumberPieces()==0 ||
+                (black.getPiece().getNumberPieces()==black.getPiece().getNumberPieces() &&
+                        white.getPiece().getNumberPieces()==white.getPiece().getNumberPieces())) retorn = false;
+
+        return retorn;
     }
 }

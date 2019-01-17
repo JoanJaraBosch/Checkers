@@ -30,7 +30,7 @@ public class Main {
         Scanner keyboard = new Scanner(System.in);
         checkers = new Checkers();
         iniciali(board);
-        while(true) {
+        while(checkers.notEnd()) {
             showBoard(board);
             System.out.println();
             if (checkers.getBlack().isTurn()) {
@@ -57,13 +57,13 @@ public class Main {
                                 else{
                                     if(auxY<0){
                                         if(auxY==-1){
-                                            if(board[posXBefore][posYBefore]!="B"&&board[posXBefore][posYBefore]!="W"){
+                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W")){
                                                 //cridar funcio moure
                                                 checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
                                             }
                                         }else{
-                                            if(board[posXBefore][posYBefore]!="B"&&board[posXBefore][posYBefore]!="W" &&
-                                                    board[posXBefore-1][posYBefore+1]!="B"&&board[posXBefore-1][posYBefore+1]!="?"){
+                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W") &&
+                                                    !board[posXBefore-1][posYBefore+1].equals("B")&&!board[posXBefore-1][posYBefore+1].equals("?")){
                                                 //cridar funcio moure
                                                 checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
                                             }else{
@@ -72,13 +72,13 @@ public class Main {
                                         }
                                     }else{
                                         if(auxY==1){
-                                            if(board[posXBefore][posYBefore]!="B"&&board[posXBefore][posYBefore]!="W"){
+                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W")){
                                                 //cridar funcio moure
                                                 checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
                                             }
                                         }else{
-                                            if(board[posXBefore][posYBefore]!="B"&&board[posXBefore][posYBefore]!="W" &&
-                                                    board[posXBefore-1][posYBefore-1]!="B"&&board[posXBefore-1][posYBefore-1]!="?"){
+                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W") &&
+                                                    !board[posXBefore-1][posYBefore+1].equals("B")&&!board[posXBefore-1][posYBefore+1].equals("?")){
                                                 //cridar funcio moure
                                                 checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
                                             }else{
@@ -121,13 +121,13 @@ public class Main {
                                 else{
                                     if(auxY<0){
                                         if(auxY==-1){
-                                            if(board[posXBefore][posYBefore]!="B"&&board[posXBefore][posYBefore]!="W"){
+                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W")){
                                                 //cridar funcio moure
                                                 checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
                                             }
                                         }else{
-                                            if(board[posXBefore][posYBefore]!="B"&&board[posXBefore][posYBefore]!="W" &&
-                                                    board[posXBefore+1][posYBefore+1]!="W"&&board[posXBefore+1][posYBefore+1]!="?"){
+                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W") &&
+                                                    !board[posXBefore+1][posYBefore+1].equals("W")&&!board[posXBefore+1][posYBefore+1].equals("?")){
                                                 //cridar funcio moure
                                                 checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
                                             }else{
@@ -136,13 +136,13 @@ public class Main {
                                         }
                                     }else{
                                         if(auxY==1){
-                                            if(board[posXBefore][posYBefore]!="B"&&board[posXBefore][posYBefore]!="W"){
+                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W")){
                                                 //cridar funcio moure
                                                 checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
                                             }
                                         }else{
-                                            if(board[posXBefore][posYBefore]!="B"&&board[posXBefore][posYBefore]!="W" &&
-                                                    board[posXBefore+1][posYBefore+1]!="W"&&board[posXBefore+1][posYBefore+1]!="?"){
+                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W") &&
+                                                    !board[posXBefore+1][posYBefore-1].equals("W")&&!board[posXBefore+1][posYBefore-1].equals("?")){
                                                 //cridar funcio moure
                                                 checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
                                             }else{
