@@ -1,9 +1,11 @@
 public class Checkers {
     private Player black , white;
+    private int opcio;
 
-    public Checkers(){
+    public Checkers(int opcio){
         black= new Player("Black");
         white = new Player("White");
+        this.opcio=opcio;
     }
 
     public Player getBlack() {

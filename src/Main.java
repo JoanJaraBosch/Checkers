@@ -28,7 +28,17 @@ public class Main {
     public static void main(String args[]){
         int posX, posY, posXBefore, posYBefore, nivell =0;
         Scanner keyboard = new Scanner(System.in);
-        checkers = new Checkers();
+        int opcio=0;
+
+        while(opcio!=1 || opcio!=2 || opcio!=3){
+            System.out.println("Tria una heuristica per a jugar: \n\n");
+            System.out.println("\t1-Fitxes blocades");
+            System.out.println("\t2-Fitxes no blocades de cada jugador");
+            System.out.println("\t1-Fitxes pels voltants per a no ser matades");
+            opcio=keyboard.nextInt();
+        }
+
+        checkers = new Checkers(opcio);
         iniciali(board);
         while(checkers.notEnd()) {
             showBoard(board);
