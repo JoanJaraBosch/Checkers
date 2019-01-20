@@ -26,10 +26,10 @@ public class Main {
     }
 
     public static void main(String args[]){
-        int posX, posY, posXBefore, posYBefore;
+        int posX, posY, posXBefore, posYBefore, nivell =0;
         Scanner keyboard = new Scanner(System.in);
         checkers = new Checkers();
-       // iniciali(board);
+        iniciali(board);
         while(checkers.notEnd()) {
             showBoard(board);
             System.out.println();
@@ -163,6 +163,7 @@ public class Main {
                 }
             }
         }
+        keyboard.close();
         checkers.winner();
     }
 }

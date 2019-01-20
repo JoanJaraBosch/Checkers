@@ -200,4 +200,38 @@ public class Checkers {
         else if(white.getPiece().getQueenPieces()<black.getPiece().getQueenPieces()) System.out.println("Ha guanyat el jugador número 2 amb "+black.getPiece().getQueenPieces()+" peces reina");
         else System.out.println("Hi ha un empat");
     }
+
+    public int heuristica1(){
+        if(black.isTurn())return white.getPiece().getBloqiedPieces()*10 - white.getPiece().getQueenPieces()*10;
+        else return black.getPiece().getBloqiedPieces()*10 - black.getPiece().getQueenPieces()*10;
+    }
+
+    public int heuristica2(){
+        if(black.isTurn())return black.getPiece().getNumberPieces()-white.getPiece().getNumberPieces();
+        else return white.getPiece().getNumberPieces()-black.getPiece().getNumberPieces();
+    }
+
+    public int heuristica3(String[][] board){
+       int i=0, j=0;
+       int cantoB=0, cantoN=0;
+       for(i=0;i<8;i++){
+           for(j=0;j<8;j++){
+               if(board[i][j].equals("B") && (j==0 || j==7 || i==7)){
+                   cantoN++;
+               }
+
+               if(board[i][j].equals("W") && (j==0 || j==7 || i==0)){
+                   cantoB++;
+               }
+           }
+       }
+       if(black.isTurn()) return cantoN-cantoB;
+       else return cantoB-cantoN;
+    }
+
+    public Node minimax(String[][] board, int nivell, int heuristica){
+        Node retorn = new Node(heuristica,board) ;
+
+        return retorn;
+    }
 }
