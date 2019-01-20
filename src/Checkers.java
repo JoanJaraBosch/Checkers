@@ -57,9 +57,12 @@ public class Checkers {
 
         //contar blocades blanques i negres
         bloquedCount(board);
+        checkerCount(board);
     }
 
     public void bloquedCount(String[][] board){
+        int blocadesBlanques=0;
+        int blocadesNegres=0;
         black.getPiece().setBloqiedPieces(0);
         white.getPiece().setBloqiedPieces(0);
         boolean dreta=false, esquerra=false;
@@ -67,20 +70,22 @@ public class Checkers {
             for(int j =0;j<8;j++){
                 if(board[i][j].equals("B")){
                     if(i+1>7){
-                        black.getPiece().setNumberPieces(black.getPiece().getNumberPieces()-1);
-                        black.getPiece().setQueenPieces(black.getPiece().getQueenPieces()+1);
+                       blocadesNegres++;
                     }else{
-                        if(i+2<=7) {
                             if (j + 1 > 7) {
                                 dreta = true;
-                            } else if (j + 1 <= 7) {
+                            } else{
                                 if (board[i + 1][j + 1].equals("B") || board[i + 1][j + 1].equals("W")) {
-                                    if (j + 2 > 7) {
-                                        dreta = true;
-                                    } else {
-                                        if (board[i + 2][j + 2].equals("B") || board[i + 2][j + 2].equals("W")) {
+                                    if(i+2<=7) {
+                                        if (j + 2 > 7) {
                                             dreta = true;
+                                        } else {
+                                            if (board[i + 2][j + 2].equals("B") || board[i + 2][j + 2].equals("W")) {
+                                                dreta = true;
+                                            }
                                         }
+                                    }else {
+                                        dreta=true;
                                     }
                                 }
                             }
@@ -89,35 +94,36 @@ public class Checkers {
                                 esquerra = true;
                             } else if (j - 1 >= 0) {
                                 if (board[i + 1][j - 1].equals("B") || board[i + 1][j - 1].equals("W")) {
-                                    if (j - 2 < 0) {
-                                        esquerra = true;
-                                    } else {
-                                        if (board[i + 2][j - 2].equals("B") || board[i + 2][j - 2].equals("W")) {
+                                    if(i+2<=7) {
+                                        if (j - 2 < 0) {
                                             esquerra = true;
+                                        } else {
+                                            if (board[i + 2][j - 2].equals("B") || board[i + 2][j - 2].equals("W")) {
+                                                esquerra = true;
+                                            }
                                         }
+
+                                    }else{
+                                        esquerra=true;
                                     }
                                 }
                             }
-                        }else{
-                            black.getPiece().setBloqiedPieces(black.getPiece().getBloqiedPieces()+1);
-                        }
 
                         if(esquerra && dreta){
-                            black.getPiece().setBloqiedPieces(black.getPiece().getBloqiedPieces()+1);
+                           blocadesNegres++;
                         }
                         esquerra=false;
                         dreta=false;
                     }
                 }else if(board[i][j].equals("W")){
                     if(i-1<0){
-                        white.getPiece().setNumberPieces(white.getPiece().getNumberPieces()-1);
-                        white.getPiece().setQueenPieces(white.getPiece().getQueenPieces()+1);
+                        blocadesBlanques++;
                     }else{
-                        if(i-2>=0) {
-                            if (j + 1 > 7) {
-                                dreta = true;
-                            } else if (j + 1 <= 7) {
-                                if (board[i - 1][j + 1].equals("B") || board[i - 1][j + 1].equals("W")) {
+                        if (j + 1 > 7) {
+                            dreta = true;
+                        } else{
+                            if (board[i - 1][j + 1].equals("B") || board[i - 1][j + 1].equals("W")) {
+                                if(i-2>=0) {
                                     if (j + 2 > 7) {
                                         dreta = true;
                                     } else {
@@ -125,13 +131,17 @@ public class Checkers {
                                             dreta = true;
                                         }
                                     }
+                                }else {
+                                    dreta=true;
                                 }
                             }
+                        }
 
-                            if (j - 1 < 0) {
-                                esquerra = true;
-                            } else if (j - 1 >= 0) {
-                                if (board[i - 1][j - 1].equals("B") || board[i - 1][j - 1].equals("W")) {
+                        if (j - 1 < 0) {
+                            esquerra = true;
+                        } else if (j - 1 >= 0) {
+                            if (board[i - 1][j - 1].equals("B") || board[i - 1][j - 1].equals("W")) {
+                                if(i-2>0) {
                                     if (j - 2 < 0) {
                                         esquerra = true;
                                     } else {
@@ -139,14 +149,15 @@ public class Checkers {
                                             esquerra = true;
                                         }
                                     }
+
+                                }else{
+                                    esquerra=true;
                                 }
                             }
-                        }else{
-                            white.getPiece().setBloqiedPieces(white.getPiece().getBloqiedPieces()+1);
                         }
 
                         if(esquerra && dreta){
-                            white.getPiece().setBloqiedPieces(white.getPiece().getBloqiedPieces()+1);
+                            blocadesBlanques++;
                         }
                         esquerra=false;
                         dreta=false;
@@ -154,6 +165,24 @@ public class Checkers {
                 }
             }
         }
+        black.getPiece().setBloqiedPieces(blocadesNegres);
+        white.getPiece().setBloqiedPieces(blocadesBlanques);
+    }
+
+
+    public void checkerCount(String[][] board){
+        int damesBlanques=0;
+        int damesNegres=0;
+        black.getPiece().setQueenPieces(0);
+        white.getPiece().setQueenPieces(0);
+        for(int j=0; j<8;j++){
+            if(board[0][j].equals("W")) damesBlanques++;
+            if(board[7][j].equals("B")) damesNegres++;
+            if(board[1][j].equals("W")) damesBlanques++;
+            if(board[6][j].equals("B")) damesNegres++;
+        }
+        black.getPiece().setQueenPieces(damesNegres);
+        white.getPiece().setQueenPieces(damesBlanques);
     }
 
     public boolean notEnd(){
@@ -164,5 +193,11 @@ public class Checkers {
                         white.getPiece().getNumberPieces()==white.getPiece().getBloqiedPieces())) retorn = false;
 
         return retorn;
+    }
+
+    public void winner(){
+        if(white.getPiece().getQueenPieces()>black.getPiece().getQueenPieces()) System.out.println("Ha guanyat el jugador número 1 amb "+white.getPiece().getQueenPieces()+" peces reina");
+        else if(white.getPiece().getQueenPieces()<black.getPiece().getQueenPieces()) System.out.println("Ha guanyat el jugador número 2 amb "+black.getPiece().getQueenPieces()+" peces reina");
+        else System.out.println("Hi ha un empat");
     }
 }

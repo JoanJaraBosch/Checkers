@@ -29,7 +29,7 @@ public class Main {
         int posX, posY, posXBefore, posYBefore;
         Scanner keyboard = new Scanner(System.in);
         checkers = new Checkers();
-        iniciali(board);
+       // iniciali(board);
         while(checkers.notEnd()) {
             showBoard(board);
             System.out.println();
@@ -78,7 +78,7 @@ public class Main {
                                             }
                                         }else{
                                             if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W") &&
-                                                    !board[posXBefore-1][posYBefore+1].equals("B")&&!board[posXBefore-1][posYBefore+1].equals("?")){
+                                                    !board[posXBefore-1][posYBefore-1].equals("B")&&!board[posXBefore-1][posYBefore-1].equals("?")){
                                                 //cridar funcio moure
                                                 checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
                                             }else{
@@ -163,5 +163,6 @@ public class Main {
                 }
             }
         }
+        checkers.winner();
     }
 }
