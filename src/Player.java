@@ -1,4 +1,4 @@
-public class Player {
+public class Player implements Cloneable {
     Piece piece;
     private String type;
     private boolean turn;
@@ -8,6 +8,10 @@ public class Player {
         this.type=type;
         if(type.equals("White")) turn= true;
         else turn = false;
+    }
+
+    public Player() {
+
     }
 
     public boolean isTurn() {
@@ -32,5 +36,13 @@ public class Player {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    protected Player clone() throws CloneNotSupportedException {
+        Player jugador= new Player();
+        jugador.setTurn(this.isTurn());
+        jugador.setPiece(this.getPiece());
+        jugador.setType(this.getType());
+        return  jugador;
     }
 }

@@ -1,3 +1,8 @@
+import com.sun.deploy.security.ValidationState;
+
+import java.util.LinkedList;
+import java.util.List;
+
 public class Checkers {
     private Player black , white;
     private int opcio;
@@ -262,11 +267,21 @@ public class Checkers {
        else return cantoB-cantoN;
     }
 
-    public Node minimax(String[][] board, int nivell, int heuristica, Player jugador, Player maquina){
+    public Node minimax(String[][] board, int nivell, Player jugador, Player maquina) throws CloneNotSupportedException {
 
-        Node retorn = new Node(heuristica,board) ;
+        Node retorn = new Node(0,null) ;
+        if(nivell%2==0){
+            maquina.setTurn(true);
+            jugador.setTurn(false);
+        }else{
+            maquina.setTurn(false);
+            jugador.setTurn(true);
+        }
         bloquedCount(board, jugador, maquina);
         checkerCount(board, jugador, maquina);
+        List<String[][]> boards;
+        int standar_Value=0;
+        String[][] standar_board = new String[0][];
 
         if(notEnd(jugador,maquina)) {
             if(LEVEL_MAX==nivell){
@@ -283,6 +298,46 @@ public class Checkers {
                 /*
                 Falta generar pasos...
                  */
+                if(nivell%2==0){
+                    standar_Value=Integer.MIN_VALUE;
+                }else{
+                    standar_Value=Integer.MAX_VALUE;
+                }
+                boards=newBoard(jugador,maquina, board);
+
+                int i=0;
+                while(i<boards.size()){
+                    standar_board=boards.get(i);
+                    try {
+                        retorn=minimax(standar_board.clone(),nivell+1,jugador.clone(),maquina.clone());
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(nivell%2==0){
+                        if(retorn.getHeuristica()>standar_Value){
+                            standar_Value=retorn.getHeuristica();
+                            retorn.setTaulell(standar_board.clone());
+                        }
+
+                    }
+                    else{
+                        if(retorn.getHeuristica()<standar_Value){
+                            standar_Value=retorn.getHeuristica();
+                            retorn.setTaulell(standar_board.clone());
+                        }
+                    }
+                    i++;
+                }
+
+                if(boards.size()==0){
+                    retorn.setHeuristica(heuristica1(jugador,maquina));
+                    retorn.setTaulell(null);
+                    return retorn;
+                }
+                retorn.setTaulell(standar_board);
+                retorn.setHeuristica(standar_Value);
+                return retorn;
             }
         }else{
             if(jugador.getPiece().getQueenPieces()>maquina.getPiece().getQueenPieces()){
@@ -291,7 +346,94 @@ public class Checkers {
                 return new Node(Integer.MAX_VALUE,board);
             }
         }
+    }
 
-        return retorn;
+    public List<String[][]> newBoard(Player player, Player player2, String[][] board) throws CloneNotSupportedException {
+        List<String[][]> retorna = new LinkedList<>();
+        int i, j, found=0, movement;
+        String[][] aux;
+        checkerCount(board,player,player2);
+        Player auxiliar, auxiliar2;
+        if(player.isTurn()) {
+            auxiliar = player.clone();
+            auxiliar2 = player2.clone();
+        }
+        else {
+            auxiliar = player2.clone();
+            auxiliar2= player.clone();
+        }
+        i=0;
+        String type, otherType;
+        if(auxiliar.getType().equals("Black")) {
+            type="B";
+            otherType="W";
+            movement=1;
+        }
+        else {
+            type="W";
+            otherType="B";
+            movement=-1;
+        }
+
+        while(found<auxiliar.getPiece().getNumberPieces() && i<8){
+            j=0;
+            while(found<auxiliar.getPiece().getNumberPieces() && j<8){
+                if(type.equals(board[i][j])){
+                    int novaX = i+movement;
+                    int novaY = j-1, novaY2 =j+1;
+                    if(novaX>8 || novaX<0) novaX=-1;
+                    else{
+                        if(novaY>0){
+                            if(board[novaX][novaY].equals(type) || board[novaX][novaY].equals(otherType)){
+                                novaX=novaX+movement;
+                                novaY--;
+                                if(novaX>8 || novaX<0) novaX=-1;
+                                else{
+                                    if (novaY > 0) {
+                                        if (!board[novaX][novaY].equals(type) && !board[novaX][novaY].equals(otherType)) {
+                                            aux=board.clone();
+                                            if(type.equals("B"))updateBoard(auxiliar,auxiliar2,i,j,novaX,novaY,aux);
+                                            else updateBoard(auxiliar2,auxiliar,i,j,novaX,novaY,aux);
+                                            retorna.add(aux.clone());
+                                        }
+                                    }
+                                }
+                            }else{
+                                aux=board.clone();
+                                if(type.equals("B"))updateBoard(auxiliar,auxiliar2,i,j,novaX,novaY,aux);
+                                else updateBoard(auxiliar2,auxiliar,i,j,novaX,novaY,aux);
+                                retorna.add(aux.clone());
+                            }
+                        }
+
+                        if(novaY<8){
+                            if(board[novaX][novaY].equals(type) || board[novaX][novaY].equals(otherType)){
+                                novaX=novaX+movement;
+                                novaY++;
+                                if(novaX>8 || novaX<0) novaX=-1;
+                                else{
+                                    if (novaY <8) {
+                                        if (!board[novaX][novaY].equals(type) && !board[novaX][novaY].equals(otherType)) {
+                                            aux=board.clone();
+                                            if(type.equals("B"))updateBoard(auxiliar,auxiliar2,i,j,novaX,novaY,aux);
+                                            else updateBoard(auxiliar2,auxiliar,i,j,novaX,novaY,aux);
+                                            retorna.add(aux.clone());
+                                        }
+                                    }
+                                }
+                            }else{
+                                aux=board.clone();
+                                if(type.equals("B"))updateBoard(auxiliar,auxiliar2,i,j,novaX,novaY,aux);
+                                else updateBoard(auxiliar2,auxiliar,i,j,novaX,novaY,aux);
+                                retorna.add(aux.clone());
+                            }
+                        }
+                    }
+                }
+                j++;
+            }
+            i++;
+        }
+        return retorna;
     }
 }
