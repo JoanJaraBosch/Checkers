@@ -269,7 +269,7 @@ public class Checkers {
 
     public Node minimax(String[][] board, int nivell, Player jugador, Player maquina) throws CloneNotSupportedException {
 
-        Node retorn = new Node(0,null) ;
+        Node retorn = new Node(0,null,null, null) ;
         if(nivell%2==0){
             maquina.setTurn(true);
             jugador.setTurn(false);
@@ -293,7 +293,7 @@ public class Checkers {
                 }else{
                     valor=heuristica3(board,jugador,maquina);
                 }
-                return new Node(valor,null);
+                return new Node(valor,null,maquina,jugador);
             }else{
                 /*
                 Falta generar pasos...
@@ -333,6 +333,8 @@ public class Checkers {
                 if(boards.size()==0){
                     retorn.setHeuristica(heuristica1(jugador,maquina));
                     retorn.setTaulell(null);
+                    retorn.setJugador(jugador);
+                    retorn.setMaquina(maquina);
                     return retorn;
                 }
                 retorn.setTaulell(standar_board);
@@ -341,9 +343,9 @@ public class Checkers {
             }
         }else{
             if(jugador.getPiece().getQueenPieces()>maquina.getPiece().getQueenPieces()){
-                return new Node(Integer.MIN_VALUE,board);
+                return new Node(Integer.MIN_VALUE,board, maquina,jugador);
             }else{
-                return new Node(Integer.MAX_VALUE,board);
+                return new Node(Integer.MAX_VALUE,board,maquina,jugador);
             }
         }
     }
@@ -381,13 +383,13 @@ public class Checkers {
                 if(type.equals(board[i][j])){
                     int novaX = i+movement;
                     int novaY = j-1, novaY2 =j+1;
-                    if(novaX>8 || novaX<0) novaX=-1;
+                    if(novaX>7 || novaX<0) novaX=-1;
                     else{
-                        if(novaY>0){
+                        if(novaY>=0){
                             if(board[novaX][novaY].equals(type) || board[novaX][novaY].equals(otherType)){
                                 novaX=novaX+movement;
                                 novaY--;
-                                if(novaX>8 || novaX<0) novaX=-1;
+                                if(novaX>7 || novaX<0) novaX=-1;
                                 else{
                                     if (novaY > 0) {
                                         if (!board[novaX][novaY].equals(type) && !board[novaX][novaY].equals(otherType)) {
@@ -405,27 +407,31 @@ public class Checkers {
                                 retorna.add(aux.clone());
                             }
                         }
-
-                        if(novaY<8){
-                            if(board[novaX][novaY].equals(type) || board[novaX][novaY].equals(otherType)){
-                                novaX=novaX+movement;
-                                novaY++;
-                                if(novaX>8 || novaX<0) novaX=-1;
-                                else{
-                                    if (novaY <8) {
-                                        if (!board[novaX][novaY].equals(type) && !board[novaX][novaY].equals(otherType)) {
-                                            aux=board.clone();
-                                            if(type.equals("B"))updateBoard(auxiliar,auxiliar2,i,j,novaX,novaY,aux);
-                                            else updateBoard(auxiliar2,auxiliar,i,j,novaX,novaY,aux);
-                                            retorna.add(aux.clone());
+                        novaX=i+movement;
+                        if(novaX>7 || novaX<0) novaX=-1;
+                        else {
+                            if (novaY2 < 8) {
+                                if (board[novaX][novaY2].equals(type) || board[novaX][novaY2].equals(otherType)) {
+                                    novaX = novaX + movement;
+                                    novaY2++;
+                                    if (novaX > 7 || novaX < 0) novaX = -1;
+                                    else {
+                                        if (novaY2 < 8) {
+                                            if (!board[novaX][novaY2].equals(type) && !board[novaX][novaY2].equals(otherType)) {
+                                                aux = board.clone();
+                                                if (type.equals("B"))
+                                                    updateBoard(auxiliar, auxiliar2, i, j, novaX, novaY2, aux);
+                                                else updateBoard(auxiliar2, auxiliar, i, j, novaX, novaY2, aux);
+                                                retorna.add(aux.clone());
+                                            }
                                         }
                                     }
+                                } else {
+                                    aux = board.clone();
+                                    if (type.equals("B")) updateBoard(auxiliar, auxiliar2, i, j, novaX, novaY2, aux);
+                                    else updateBoard(auxiliar2, auxiliar, i, j, novaX, novaY2, aux);
+                                    retorna.add(aux.clone());
                                 }
-                            }else{
-                                aux=board.clone();
-                                if(type.equals("B"))updateBoard(auxiliar,auxiliar2,i,j,novaX,novaY,aux);
-                                else updateBoard(auxiliar2,auxiliar,i,j,novaX,novaY,aux);
-                                retorna.add(aux.clone());
                             }
                         }
                     }
