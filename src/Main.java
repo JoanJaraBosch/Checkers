@@ -38,9 +38,9 @@ public class Main {
             opcio=keyboard.nextInt();
         }
 
-        checkers = new Checkers(opcio);
+        checkers = new Checkers(opcio, board);
         iniciali(board);
-        while(checkers.notEnd()) {
+        while(checkers.notEnd(checkers.getWhite(),checkers.getBlack())) {
             showBoard(board);
             System.out.println();
             if (checkers.getBlack().isTurn()) {
@@ -174,6 +174,6 @@ public class Main {
             }
         }
         keyboard.close();
-        checkers.winner();
+        checkers.winner(checkers.getWhite(),checkers.getBlack());
     }
 }

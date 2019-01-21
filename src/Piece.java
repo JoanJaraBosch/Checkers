@@ -1,4 +1,4 @@
-public class Piece {
+public class Piece implements Cloneable {
     private int x = 12;
     private int numberPieces = 12;
     private int bloqiedPieces=0;
@@ -7,6 +7,10 @@ public class Piece {
 
     public Piece(String type){
         this.type=type;
+    }
+
+    public Piece() {
+
     }
 
     public int getNumberPieces() {
@@ -31,5 +35,13 @@ public class Piece {
 
     public void setQueenPieces(int queenPieces) {
         this.queenPieces = queenPieces;
+    }
+
+    protected Piece clone() throws CloneNotSupportedException {
+        Piece jugador= new Piece();
+        jugador.setQueenPieces(this.getQueenPieces());
+        jugador.setBloqiedPieces(this.getBloqiedPieces());
+        jugador.setNumberPieces(this.getNumberPieces());
+        return  jugador;
     }
 }

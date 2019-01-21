@@ -1,11 +1,30 @@
 public class Checkers {
     private Player black , white;
     private int opcio;
+    private static int LEVEL_MAX=6;
+    private String[][] board;
 
-    public Checkers(int opcio){
+    public Checkers(int opcio, String[][] board){
         black= new Player("Black");
         white = new Player("White");
         this.opcio=opcio;
+        this.board=board.clone();
+    }
+
+    public void setBlack(Player black) {
+        this.black = black;
+    }
+
+    public void setWhite(Player white) {
+        this.white = white;
+    }
+
+    public String[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(String[][] board) {
+        this.board = board;
     }
 
     public Player getBlack() {
@@ -58,15 +77,15 @@ public class Checkers {
         }
 
         //contar blocades blanques i negres
-        bloquedCount(board);
-        checkerCount(board);
+        bloquedCount(board, white, black);
+        checkerCount(board, white, black);
     }
 
-    public void bloquedCount(String[][] board){
+    public void bloquedCount(String[][] board, Player num1, Player num2){
         int blocadesBlanques=0;
         int blocadesNegres=0;
-        black.getPiece().setBloqiedPieces(0);
-        white.getPiece().setBloqiedPieces(0);
+        num2.getPiece().setBloqiedPieces(0);
+        num1.getPiece().setBloqiedPieces(0);
         boolean dreta=false, esquerra=false;
         for(int i=0; i<8;i++){
             for(int j =0;j<8;j++){
@@ -167,53 +186,65 @@ public class Checkers {
                 }
             }
         }
-        black.getPiece().setBloqiedPieces(blocadesNegres);
-        white.getPiece().setBloqiedPieces(blocadesBlanques);
+        num2.getPiece().setBloqiedPieces(blocadesNegres);
+        num1.getPiece().setBloqiedPieces(blocadesBlanques);
     }
 
 
-    public void checkerCount(String[][] board){
+    public void checkerCount(String[][] board, Player num1, Player num2){
         int damesBlanques=0;
         int damesNegres=0;
-        black.getPiece().setQueenPieces(0);
-        white.getPiece().setQueenPieces(0);
+        num2.getPiece().setQueenPieces(0);
+        num1.getPiece().setQueenPieces(0);
         for(int j=0; j<8;j++){
             if(board[0][j].equals("W")) damesBlanques++;
             if(board[7][j].equals("B")) damesNegres++;
-            if(board[1][j].equals("W")) damesBlanques++;
-            if(board[6][j].equals("B")) damesNegres++;
         }
-        black.getPiece().setQueenPieces(damesNegres);
-        white.getPiece().setQueenPieces(damesBlanques);
+
+        if(damesBlanques==damesNegres){
+            for(int j = 0;j<8;j++){
+                if(board[1][j].equals("W")) damesBlanques++;
+                if(board[6][j].equals("B")) damesNegres++;
+            }
+        }
+
+        if(damesBlanques==damesNegres){
+            for(int j = 0;j<8;j++){
+                if(board[2][j].equals("W")) damesBlanques++;
+                if(board[5][j].equals("B")) damesNegres++;
+            }
+        }
+        num2.getPiece().setQueenPieces(damesNegres);
+        num1.getPiece().setQueenPieces(damesBlanques);
     }
 
-    public boolean notEnd(){
+    public boolean notEnd(Player num1, Player num2){
         boolean retorn = true;
 
-        if(white.getPiece().getNumberPieces()==0 || black.getPiece().getNumberPieces()==0 ||
-                (black.getPiece().getNumberPieces()==black.getPiece().getBloqiedPieces() &&
-                        white.getPiece().getNumberPieces()==white.getPiece().getBloqiedPieces())) retorn = false;
+        if(num1.getPiece().getNumberPieces()==0 || num2.getPiece().getNumberPieces()==0 ||
+                (num2.getPiece().getNumberPieces()==num2.getPiece().getBloqiedPieces() &&
+                        num1.getPiece().getNumberPieces()==num1.getPiece().getBloqiedPieces())) retorn = false;
 
         return retorn;
     }
 
-    public void winner(){
-        if(white.getPiece().getQueenPieces()>black.getPiece().getQueenPieces()) System.out.println("Ha guanyat el jugador número 1 amb "+white.getPiece().getQueenPieces()+" peces reina");
-        else if(white.getPiece().getQueenPieces()<black.getPiece().getQueenPieces()) System.out.println("Ha guanyat el jugador número 2 amb "+black.getPiece().getQueenPieces()+" peces reina");
+    public void winner(Player num1, Player num2){
+        if(num1.getPiece().getQueenPieces()>num2.getPiece().getQueenPieces()) System.out.println("Ha guanyat el jugador número 1 amb "+white.getPiece().getQueenPieces()+" peces reina");
+        else if(num1.getPiece().getQueenPieces()<num2.getPiece().getQueenPieces()) System.out.println("Ha guanyat el jugador número 2 amb "+black.getPiece().getQueenPieces()+" peces reina");
         else System.out.println("Hi ha un empat");
     }
 
-    public int heuristica1(){
-        if(black.isTurn())return white.getPiece().getBloqiedPieces()*10 - white.getPiece().getQueenPieces()*10;
-        else return black.getPiece().getBloqiedPieces()*10 - black.getPiece().getQueenPieces()*10;
+    public int heuristica1(Player num1, Player num2){
+        if(num2.isTurn())return num1.getPiece().getBloqiedPieces()*10 - num1.getPiece().getQueenPieces()*10;
+        else return num2.getPiece().getBloqiedPieces()*10 - num2.getPiece().getQueenPieces()*10;
     }
 
-    public int heuristica2(){
-        if(black.isTurn())return black.getPiece().getNumberPieces()-white.getPiece().getNumberPieces();
-        else return white.getPiece().getNumberPieces()-black.getPiece().getNumberPieces();
+    public int heuristica2(Player num1, Player num2){
+        if(num2.isTurn())return num2.getPiece().getNumberPieces()-num1.getPiece().getNumberPieces();
+        else return num1.getPiece().getNumberPieces()-num2.getPiece().getNumberPieces();
     }
 
-    public int heuristica3(String[][] board){
+    public int heuristica3(String[][] board,Player num1, Player num2){
        int i=0, j=0;
        int cantoB=0, cantoN=0;
        for(i=0;i<8;i++){
@@ -227,12 +258,39 @@ public class Checkers {
                }
            }
        }
-       if(black.isTurn()) return cantoN-cantoB;
+       if(num2.isTurn()) return cantoN-cantoB;
        else return cantoB-cantoN;
     }
 
-    public Node minimax(String[][] board, int nivell, int heuristica){
+    public Node minimax(String[][] board, int nivell, int heuristica, Player jugador, Player maquina){
+
         Node retorn = new Node(heuristica,board) ;
+        bloquedCount(board, jugador, maquina);
+        checkerCount(board, jugador, maquina);
+
+        if(notEnd(jugador,maquina)) {
+            if(LEVEL_MAX==nivell){
+                int valor;
+                if(opcio==1){
+                    valor=heuristica1(jugador,maquina);
+                }else if(opcio==2){
+                    valor=heuristica2(jugador,maquina);
+                }else{
+                    valor=heuristica3(board,jugador,maquina);
+                }
+                return new Node(valor,null);
+            }else{
+                /*
+                Falta generar pasos...
+                 */
+            }
+        }else{
+            if(jugador.getPiece().getQueenPieces()>maquina.getPiece().getQueenPieces()){
+                return new Node(Integer.MIN_VALUE,board);
+            }else{
+                return new Node(Integer.MAX_VALUE,board);
+            }
+        }
 
         return retorn;
     }
