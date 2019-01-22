@@ -82,8 +82,7 @@ public class Checkers {
         }
 
         //contar blocades blanques i negres
-        bloquedCount(board, white, black);
-        checkerCount(board, white, black);
+        pieceCount(board, white, black);
     }
 
     public void bloquedCount(String[][] board, Player num1, Player num2){
@@ -223,6 +222,37 @@ public class Checkers {
         num1.getPiece().setQueenPieces(damesBlanques);
     }
 
+    public void pieceCount(String[][] board, Player num1, Player num2){
+        String jugador1, jugador2;
+        if(num1.getType().equals("Black")){
+            jugador1="B";
+            jugador2 = "W";
+        }else{
+            jugador1="W";
+            jugador2 = "B";
+        }
+        num1.getPiece().setNumberPieces(0);
+        num2.getPiece().setNumberPieces(0);
+        for(int i = 0; i<8;i++){
+            for(int j = 0; j<8;j++){
+                if(board[i][j].equals(jugador1)){
+                    num1.getPiece().setNumberPieces(num1.getPiece().getNumberPieces()+1);
+                }else{
+                    if(board[i][j].equals(jugador2)){
+                        num2.getPiece().setNumberPieces(num2.getPiece().getNumberPieces()+1);
+                    }
+                }
+            }
+        }
+        if(num1.getType().equals("Black")){
+           bloquedCount(board,num2,num1);
+           checkerCount(board,num2,num1);
+        }else{
+            bloquedCount(board,num1,num2);
+            checkerCount(board,num1,num2);
+        }
+    }
+
     public boolean notEnd(Player num1, Player num2){
         boolean retorn = true;
 
@@ -277,8 +307,7 @@ public class Checkers {
             maquina.setTurn(false);
             jugador.setTurn(true);
         }
-        bloquedCount(board, jugador, maquina);
-        checkerCount(board, jugador, maquina);
+        pieceCount(board, jugador, maquina);
         List<String[][]> boards;
         int standar_Value=0;
         String[][] standar_board = new String[0][];
