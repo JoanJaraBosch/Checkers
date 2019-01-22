@@ -44,7 +44,7 @@ public class Main {
             showBoard(board);
             System.out.println();
             if (checkers.getBlack().isTurn()) {
-                /*System.out.println("Player 2: Choose a black checker. Put the row.");
+                System.out.println("Player 2: Choose a black checker. Put the row.");
                 posX=keyboard.nextInt()-1;
                 System.out.println("Player 2: Choose a black checker. Put the column.");
                 keyboard.nextLine();
@@ -106,8 +106,8 @@ public class Main {
                     }
                 }else {
                     System.out.println("You have to choose a valid checker.");
-                }*/
-                Node aux = checkers.minimax(board.clone(),0,checkers.getWhite().clone(),checkers.getBlack().clone());
+                }
+                /*Node aux = checkers.minimax(board.clone(),0,checkers.getWhite().clone(),checkers.getBlack().clone());
                 board=aux.getTaulell().clone();
                 checkers.checkerCount(board,checkers.getWhite(),checkers.getBlack());
                 checkers.bloquedCount(board,checkers.getWhite(),checkers.getBlack());
@@ -115,7 +115,7 @@ public class Main {
                 System.out.println("Fitxes Blanques: "+checkers.getWhite().getPiece().getQueenPieces());
                 System.out.println("Fitxes Negres: "+checkers.getBlack().getPiece().getQueenPieces());
                 System.out.println("Fitxes Blanques Blocades: "+checkers.getWhite().getPiece().getBloqiedPieces());
-                System.out.println("Fitxes Negres Blocades: "+checkers.getBlack().getPiece().getBloqiedPieces());
+                System.out.println("Fitxes Negres Blocades: "+checkers.getBlack().getPiece().getBloqiedPieces());*/
 
             } else {
                 System.out.println("Player 1: Choose a white checker. Put the row.");
