@@ -16,6 +16,39 @@ public class Main {
         }
     }
 
+    public static boolean validMovement(String[][] board, int posx, int posy, int xBef, int yBef){
+        boolean retorn = false;
+        int posicioX= posx-xBef;
+        int posicioY = posy-yBef;
+
+        if(board[xBef][yBef].equals("W")) {
+            if (posicioX == 1) {
+                if (posicioY == 1 || posicioY == -1) {
+                    if (board[xBef][yBef].equals("?")) {
+                        retorn = true;
+                    } else {
+                        System.out.println("Has d'escollir una posicio final valida");
+                    }
+                } else if (posicioX == 2) {
+                    if (posicioY == 2 || posicioY == -2) {
+                        if (posicioY == 2) {
+                            if (board[xBef + 1][yBef - 1].equals("B") && board[xBef][yBef].equals("?")) {
+                                retorn = true;
+                            }
+                        }
+                    } else {
+                        if (posicioY == -2) {
+                            if (board[xBef + 1][yBef + 1].equals("B") && board[xBef][yBef].equals("?")) {
+                                retorn = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return retorn;
+    }
+
     public static void showBoard(String[][] board){
         System.out.print("  A B C D E F G H");
         for(int i =0; i<dim;i++){
@@ -153,7 +186,10 @@ public class Main {
                             aux = keyboard.next();
                             posYBefore = aux.toUpperCase().charAt(0) - 65;
                             if (posXBefore > -1 && posYBefore > -1 && posXBefore < dim && posYBefore < dim) {
-                                int auxX = posXBefore - posX;
+                                if(validMovement(board,posX,posY,posXBefore,posYBefore)){
+                                    checkers.moveChecker(posX, posY, posXBefore, posYBefore, board);
+                                }
+                                /*int auxX = posXBefore - posX;
                                 int auxY = posYBefore - posY;
                                 if (auxY < -2 || auxY > 2) System.out.println("You have to choose a valid position.");
                                 else {
@@ -192,7 +228,8 @@ public class Main {
                                             }
                                         }
                                     }
-                                }
+                                }*/
+
                             } else {
                                 System.out.println("You have to choose a valid position.");
                             }
