@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -40,6 +41,17 @@ public class Main {
 
         checkers = new Checkers(opcio, board);
         iniciali(board);
+
+        List<String[][]> aux = checkers.newBoard(checkers.getBlack(),checkers.getWhite(),board);
+        int i=0;
+        while(i<aux.size()){
+            System.out.println("TAULELL CREAT POSICIO: "+i);
+            System.out.println("\n\n\n");
+            showBoard(aux.get(i));
+            System.out.println("\n\n\n");
+            i++;
+        }
+        /*
         while(checkers.notEnd(checkers.getWhite(),checkers.getBlack())) {
             showBoard(board);
             System.out.println();
@@ -117,7 +129,7 @@ public class Main {
                 System.out.println("Fitxes Blanques Blocades: "+checkers.getWhite().getPiece().getBloqiedPieces());
                 System.out.println("Fitxes Negres Blocades: "+checkers.getBlack().getPiece().getBloqiedPieces());*/
 
-            } else {
+           /* } else {
                 System.out.println("Player 1: Choose a white checker. Put the row.");
                 posX=keyboard.nextInt()-1;
                 System.out.println("Player 1: Choose a white checker. Put the column.");
@@ -185,5 +197,6 @@ public class Main {
         }
         keyboard.close();
         checkers.winner(checkers.getWhite(),checkers.getBlack());
+        */
     }
 }

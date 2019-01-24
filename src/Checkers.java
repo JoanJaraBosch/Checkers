@@ -13,7 +13,7 @@ public class Checkers {
         black= new Player("Black");
         white = new Player("White");
         this.opcio=opcio;
-        this.board=board.clone();
+        this.board=clone(board);
     }
 
     public void setBlack(Player black) {
@@ -43,6 +43,7 @@ public class Checkers {
     public void moveChecker(int xBefore, int yBefore, int x, int y, String[][] board){
             //si es pot fer el moviment posem true actualitzem tauler i actualitzem posicions
         updateBoard(black,white,xBefore,yBefore,x,y,board);
+        changeTurn(white,black);
     }
 
     public void bloquedCount(String[][] board, Player num1, Player num2){
@@ -280,7 +281,123 @@ public class Checkers {
     }
 
     public List<String[][]> newBoard(Player player, Player player2, String[][] board) throws CloneNotSupportedException {
-        return null;
+
+        String[][] taula = clone(board);
+        List<String[][]> taulells = new LinkedList<>();
+        Player num1 = player.clone();
+        Player num2 = player2.clone();
+        String type, otherType;
+        int i , j;
+
+
+        if(num1.isTurn()) {
+            if (num1.getType().equals("Black")) {
+                pieceCount(taula, num2, num1);
+                type = "B";
+                otherType = "W";
+            } else {
+                pieceCount(taula, num1, num2);
+                type = "W";
+                otherType = "B";
+            }
+        }else {
+            if (num2.getType().equals("Black")) {
+                pieceCount(taula, num1, num2);
+                type = "B";
+                otherType = "W";
+            } else {
+                pieceCount(taula, num2, num1);
+                type = "W";
+                otherType = "B";
+            }
+        }
+
+        i=0;
+        while (i<8) {
+            j=0;
+            while(j<8){
+                if(taula[i][j].equals(type)){
+                    int moviment;
+                    if(type.equals("B")){
+                        moviment=1;
+                    }else{
+                        moviment =-1;
+                    }
+
+                    int auxY=j+1;
+                    int auxY2=j-1;
+                    int auxX=i+moviment;
+                    //dreta
+                    if(auxX>=0 && auxX<=7){
+                        if(auxY<=7){
+                            if(!taula[auxX][auxY].equals(type)){
+                                if(taula[auxX][auxY].equals(otherType)){
+                                    auxX+=moviment;
+                                    auxY+=1;
+                                    if(auxX>=0 && auxX<=7){
+                                        if(auxY<=7){
+                                            if(!taula[auxX][auxY].equals(otherType) && !taula[auxX][auxY].equals(type)){
+                                                String[][] aux = clone(taula);
+                                                if(num1.getType().equals("Black")) {
+                                                    updateBoard(num1,num2,i,j,auxX,auxY,aux);
+                                                }else{
+                                                    updateBoard(num2,num1,i,j,auxX,auxY,aux);
+                                                }
+                                                taulells.add(aux);
+                                            }
+                                        }
+                                    }
+                                }else{
+                                    String[][] aux = clone(taula);
+                                    if(num1.getType().equals("Black")) {
+                                        updateBoard(num1,num2,i,j,auxX,auxY,aux);
+                                    }else{
+                                        updateBoard(num2,num1,i,j,auxX,auxY,aux);
+                                    }
+                                    taulells.add(aux);
+                                }
+                            }
+                        }
+                        auxX=moviment+i;
+                        //esquerra
+                        if(auxY2>=0){
+                            if(!taula[auxX][auxY2].equals(type)){
+                                if(taula[auxX][auxY2].equals(otherType)){
+                                    auxX+=moviment;
+                                    auxY2-=1;
+                                    if(auxX>=0 && auxX<=7){
+                                        if(auxY2>=0){
+                                            if(!taula[auxX][auxY2].equals(otherType) && !taula[auxX][auxY2].equals(type)){
+                                                String[][] aux = clone(taula);
+                                                if(num1.getType().equals("Black")) {
+                                                    updateBoard(num1,num2,i,j,auxX,auxY2,aux);
+                                                }else{
+                                                    updateBoard(num2,num1,i,j,auxX,auxY2,aux);
+                                                }
+                                                taulells.add(aux);
+                                            }
+                                        }
+                                    }
+                                }else{
+                                    String[][] aux = clone(taula);
+                                    if(num1.getType().equals("Black")) {
+                                        updateBoard(num1,num2,i,j,auxX,auxY2,aux);
+                                    }else{
+                                        updateBoard(num2,num1,i,j,auxX,auxY2,aux);
+                                    }
+                                    taulells.add(aux);
+                                }
+                            }
+                        }
+                    }
+                }
+                j++;
+            }
+            i++;
+        }
+
+
+        return taulells;
     }
 
     public void changeTurn(Player num1, Player num2){
@@ -319,6 +436,17 @@ public class Checkers {
             }
         }
         pieceCount(board,white,black);
-        changeTurn(white,black);
+    }
+
+    public String[][] clone(String[][] board){
+        String[][] aux = new String[8][8];
+
+        for(int i =0; i<8;i++){
+            for(int j = 0; j<8;j++){
+                aux[i][j]=board[i][j];
+            }
+        }
+
+        return aux;
     }
 }
