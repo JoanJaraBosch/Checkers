@@ -277,7 +277,89 @@ public class Checkers {
     }
 
     public Node minimax(String[][] board, int nivell, Player jugador, Player maquina) throws CloneNotSupportedException {
-        return new Node(0,null,null,null);
+        Node retorn = new Node(0,null,null,null);
+        String [][] aux, taulell_return=null;
+        int mes_infinit= Integer.MAX_VALUE, menys_infinit= Integer.MIN_VALUE;
+        int heuristic_value=0, i;
+        List<String[][]> taulells;
+
+        pieceCount(board,jugador,maquina);
+
+        if(notEnd(jugador,maquina)){
+            if(nivell==LEVEL_MAX){
+                int val;
+                if(opcio==1){
+                    val=heuristica1(jugador,maquina);
+                }else if(opcio==2){
+                    val=heuristica2(jugador,maquina);
+                }else{
+                    val=heuristica3(board,jugador,maquina);
+                }
+                retorn.setHeuristica(val);
+                retorn.setTaulell(null);
+                return retorn;
+            }else{
+                if(nivell%2==0) {
+                    heuristic_value=menys_infinit;
+                }
+                else {
+                    heuristic_value=mes_infinit;
+                }
+                taulells=newBoard(jugador,maquina,board);
+
+                i=0;
+                while(i < taulells.size()){
+                    aux=taulells.get(i);
+                    try {
+                        retorn=minimax(clone(aux),nivell+1,jugador,maquina);
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(nivell%2==0){
+                        if((retorn.getHeuristica())>heuristic_value){
+                            heuristic_value=retorn.getHeuristica();
+                            taulell_return=clone(aux);
+                        }
+
+                    }
+                    else{
+                        if(retorn.getHeuristica()<heuristic_value) {
+                            heuristic_value = retorn.getHeuristica();
+                            taulell_return = clone(aux);
+                        }
+                    }
+                    i++;
+                }
+                if(taulells.size()==0){
+                    int val;
+                    if(opcio==1){
+                        val=heuristica1(jugador,maquina);
+                    }else if(opcio==2){
+                        val=heuristica2(jugador,maquina);
+                    }else{
+                        val=heuristica3(board,jugador,maquina);
+                    }
+                    retorn.setHeuristica(val);
+                    retorn.setTaulell(null);
+                    return retorn;
+                }
+                retorn.setHeuristica(heuristic_value);
+                retorn.setTaulell(taulell_return);
+                return retorn;
+            }
+        }else{
+            retorn.setMaquina(maquina);
+            retorn.setJugador(jugador);
+            retorn.setTaulell(null);
+            if(jugador.getPiece().getQueenPieces()>maquina.getPiece().getQueenPieces()) retorn.setHeuristica(menys_infinit);
+            else if(jugador.getPiece().getQueenPieces()<maquina.getPiece().getQueenPieces()) retorn.setHeuristica(mes_infinit);
+            else if(jugador.getPiece().getNumberPieces()>maquina.getPiece().getNumberPieces())retorn.setHeuristica(menys_infinit);
+            else if(jugador.getPiece().getNumberPieces()<maquina.getPiece().getNumberPieces())retorn.setHeuristica(mes_infinit);
+            else retorn.setHeuristica(mes_infinit);
+        }
+
+        return retorn;
     }
 
     public List<String[][]> newBoard(Player player, Player player2, String[][] board) throws CloneNotSupportedException {
@@ -429,9 +511,9 @@ public class Checkers {
             board[posX][posY]="W";
             if((posX-posXBefore==-2)){
                 if(posY-posYBefore==2){
-                    board[posX-1][posY-1]="?";
+                    board[posX+1][posY-1]="?";
                 }else{
-                    board[posX-1][posY+1]="?";
+                    board[posX+1][posY+1]="?";
                 }
             }
         }

@@ -24,6 +24,7 @@ public class Main {
                 System.out.print(board[i][j]+" ");
             }
         }
+        System.out.print("\n\n");
     }
 
     public static void main(String args[]) throws CloneNotSupportedException {
@@ -42,7 +43,7 @@ public class Main {
         checkers = new Checkers(opcio, board);
         iniciali(board);
 
-        List<String[][]> aux = checkers.newBoard(checkers.getBlack(),checkers.getWhite(),board);
+        /*List<String[][]> aux = checkers.newBoard(checkers.getBlack(),checkers.getWhite(),board);
         int i=0;
         while(i<aux.size()){
             System.out.println("TAULELL CREAT POSICIO: "+i);
@@ -51,74 +52,76 @@ public class Main {
             System.out.println("\n\n\n");
             i++;
         }
-        /*
+        */
         while(checkers.notEnd(checkers.getWhite(),checkers.getBlack())) {
-            showBoard(board);
-            System.out.println();
-            if (checkers.getBlack().isTurn()) {
-                System.out.println("Player 2: Choose a black checker. Put the row.");
-                posX=keyboard.nextInt()-1;
+            if(board!=null) {
+                showBoard(board);
+
+                System.out.println();
+                if (checkers.getBlack().isTurn()) {
+               /* System.out.println("Player 2: Choose a black checker. Put the row.");
+                posX = keyboard.nextInt() - 1;
                 System.out.println("Player 2: Choose a black checker. Put the column.");
                 keyboard.nextLine();
                 String aux = keyboard.next();
-                posY=aux.toUpperCase().charAt(0)-65;
-                if(posX>-1 && posY>-1 && posX<dim && posY <dim) {
+                posY = aux.toUpperCase().charAt(0) - 65;
+                if (posX > -1 && posY > -1 && posX < dim && posY < dim) {
                     if (board[posX][posY].equals("B")) {
                         System.out.println("Player 2: Choose where to move the checker. Put the row.");
                         posXBefore = keyboard.nextInt() - 1;
                         System.out.println("Player 2: Choose where to move the checker. Put the column.");
                         keyboard.nextLine();
                         aux = keyboard.next();
-                        posYBefore = aux.toUpperCase().charAt(0)-65;
-                        if (posXBefore>-1 && posYBefore>-1 && posXBefore<dim && posYBefore <dim) {
-                            int auxX = posXBefore-posX;
-                            int auxY = posYBefore-posY;
-                            if(auxY<-2 || auxY>2) System.out.println("You have to choose a valid position.");
-                            else{
-                                if(auxX!=1 && auxX!=2)System.out.println("You have to choose a valid position.");
-                                else{
-                                    if(auxY<0){
-                                        if(auxY==-1){
-                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W")){
+                        posYBefore = aux.toUpperCase().charAt(0) - 65;
+                        if (posXBefore > -1 && posYBefore > -1 && posXBefore < dim && posYBefore < dim) {
+                            int auxX = posXBefore - posX;
+                            int auxY = posYBefore - posY;
+                            if (auxY < -2 || auxY > 2) System.out.println("You have to choose a valid position.");
+                            else {
+                                if (auxX != 1 && auxX != 2) System.out.println("You have to choose a valid position.");
+                                else {
+                                    if (auxY < 0) {
+                                        if (auxY == -1) {
+                                            if (!board[posXBefore][posYBefore].equals("B") && !board[posXBefore][posYBefore].equals("W")) {
                                                 //cridar funcio moure
-                                                checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
+                                                checkers.moveChecker(posX, posY, posXBefore, posYBefore, board);
                                             }
-                                        }else{
-                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W") &&
-                                                    !board[posXBefore-1][posYBefore+1].equals("B")&&!board[posXBefore-1][posYBefore+1].equals("?")){
+                                        } else {
+                                            if (!board[posXBefore][posYBefore].equals("B") && !board[posXBefore][posYBefore].equals("W") &&
+                                                    !board[posXBefore - 1][posYBefore + 1].equals("B") && !board[posXBefore - 1][posYBefore + 1].equals("?")) {
                                                 //cridar funcio moure
-                                                checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
-                                            }else{
+                                                checkers.moveChecker(posX, posY, posXBefore, posYBefore, board);
+                                            } else {
                                                 System.out.println("You have to choose a valid position.");
                                             }
                                         }
-                                    }else{
-                                        if(auxY==1){
-                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W")){
+                                    } else {
+                                        if (auxY == 1) {
+                                            if (!board[posXBefore][posYBefore].equals("B") && !board[posXBefore][posYBefore].equals("W")) {
                                                 //cridar funcio moure
-                                                checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
+                                                checkers.moveChecker(posX, posY, posXBefore, posYBefore, board);
                                             }
-                                        }else{
-                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W") &&
-                                                    !board[posXBefore-1][posYBefore-1].equals("B")&&!board[posXBefore-1][posYBefore-1].equals("?")){
+                                        } else {
+                                            if (!board[posXBefore][posYBefore].equals("B") && !board[posXBefore][posYBefore].equals("W") &&
+                                                    !board[posXBefore - 1][posYBefore - 1].equals("B") && !board[posXBefore - 1][posYBefore - 1].equals("?")) {
                                                 //cridar funcio moure
-                                                checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
-                                            }else{
+                                                checkers.moveChecker(posX, posY, posXBefore, posYBefore, board);
+                                            } else {
                                                 System.out.println("You have to choose a valid position.");
                                             }
                                         }
                                     }
                                 }
                             }
-                        }else{
+                        } else {
                             System.out.println("You have to choose a valid position.");
                         }
                     } else {
                         System.out.println("You have to choose a valid checker.");
                     }
-                }else {
+                } else {
                     System.out.println("You have to choose a valid checker.");
-                }
+                }*/
                 /*Node aux = checkers.minimax(board.clone(),0,checkers.getWhite().clone(),checkers.getBlack().clone());
                 board=aux.getTaulell().clone();
                 checkers.checkerCount(board,checkers.getWhite(),checkers.getBlack());
@@ -128,75 +131,85 @@ public class Main {
                 System.out.println("Fitxes Negres: "+checkers.getBlack().getPiece().getQueenPieces());
                 System.out.println("Fitxes Blanques Blocades: "+checkers.getWhite().getPiece().getBloqiedPieces());
                 System.out.println("Fitxes Negres Blocades: "+checkers.getBlack().getPiece().getBloqiedPieces());*/
-
-           /* } else {
-                System.out.println("Player 1: Choose a white checker. Put the row.");
-                posX=keyboard.nextInt()-1;
-                System.out.println("Player 1: Choose a white checker. Put the column.");
-                keyboard.nextLine();
-                String aux = keyboard.next();
-                posY=aux.toUpperCase().charAt(0)-65;
-                if(posX>-1 && posY>-1 && posX<dim && posY <dim) {
-                    if (board[posX][posY].equals("W")) {
-                        System.out.println("Player 1: Choose where to move the checker. Put the row.");
-                        posXBefore = keyboard.nextInt() - 1;
-                        System.out.println("Player 1: Choose where to move the checker. Put the column.");
-                        keyboard.nextLine();
-                        aux = keyboard.next();
-                        posYBefore = aux.toUpperCase().charAt(0)-65;
-                        if (posXBefore>-1 && posYBefore>-1 && posXBefore<dim && posYBefore <dim) {
-                            int auxX = posXBefore-posX;
-                            int auxY = posYBefore-posY;
-                            if(auxY<-2 || auxY>2) System.out.println("You have to choose a valid position.");
-                            else{
-                                if(auxX!=-1 && auxX!=-2)System.out.println("You have to choose a valid position.");
-                                else{
-                                    if(auxY<0){
-                                        if(auxY==-1){
-                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W")){
-                                                //cridar funcio moure
-                                                checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
+                    Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite(), checkers.getBlack());
+                    board = checkers.clone(aux.getTaulell());
+                    checkers.pieceCount(board, checkers.getWhite(), checkers.getBlack());
+                    if (checkers.getBlack().isTurn()) {
+                        checkers.changeTurn(checkers.getWhite(), checkers.getBlack());
+                    }
+                } else {
+                    System.out.println("Player 1: Choose a white checker. Put the row.");
+                    posX = keyboard.nextInt() - 1;
+                    System.out.println("Player 1: Choose a white checker. Put the column.");
+                    keyboard.nextLine();
+                    String aux = keyboard.next();
+                    posY = aux.toUpperCase().charAt(0) - 65;
+                    if (posX > -1 && posY > -1 && posX < dim && posY < dim) {
+                        if (board[posX][posY].equals("W")) {
+                            System.out.println("Player 1: Choose where to move the checker. Put the row.");
+                            posXBefore = keyboard.nextInt() - 1;
+                            System.out.println("Player 1: Choose where to move the checker. Put the column.");
+                            keyboard.nextLine();
+                            aux = keyboard.next();
+                            posYBefore = aux.toUpperCase().charAt(0) - 65;
+                            if (posXBefore > -1 && posYBefore > -1 && posXBefore < dim && posYBefore < dim) {
+                                int auxX = posXBefore - posX;
+                                int auxY = posYBefore - posY;
+                                if (auxY < -2 || auxY > 2) System.out.println("You have to choose a valid position.");
+                                else {
+                                    if (auxX != -1 && auxX != -2)
+                                        System.out.println("You have to choose a valid position.");
+                                    else {
+                                        if (auxY < 0) {
+                                            if (auxY == -1) {
+                                                if (!board[posXBefore][posYBefore].equals("B") && !board[posXBefore][posYBefore].equals("W")) {
+                                                    //cridar funcio moure
+                                                    checkers.moveChecker(posX, posY, posXBefore, posYBefore, board);
+                                                }
+                                            } else {
+                                                if (!board[posXBefore][posYBefore].equals("B") && !board[posXBefore][posYBefore].equals("W") &&
+                                                        !board[posXBefore + 1][posYBefore + 1].equals("W") && !board[posXBefore + 1][posYBefore + 1].equals("?")) {
+                                                    //cridar funcio moure
+                                                    checkers.moveChecker(posX, posY, posXBefore, posYBefore, board);
+                                                } else {
+                                                    System.out.println("You have to choose a valid position.");
+                                                }
                                             }
-                                        }else{
-                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W") &&
-                                                    !board[posXBefore+1][posYBefore+1].equals("W")&&!board[posXBefore+1][posYBefore+1].equals("?")){
-                                                //cridar funcio moure
-                                                checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
-                                            }else{
-                                                System.out.println("You have to choose a valid position.");
-                                            }
-                                        }
-                                    }else{
-                                        if(auxY==1){
-                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W")){
-                                                //cridar funcio moure
-                                                checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
-                                            }
-                                        }else{
-                                            if(!board[posXBefore][posYBefore].equals("B")&&!board[posXBefore][posYBefore].equals("W") &&
-                                                    !board[posXBefore+1][posYBefore-1].equals("W")&&!board[posXBefore+1][posYBefore-1].equals("?")){
-                                                //cridar funcio moure
-                                                checkers.moveChecker(posX,posY,posXBefore,posYBefore,board);
-                                            }else{
-                                                System.out.println("You have to choose a valid position.");
+                                        } else {
+                                            if (auxY == 1) {
+                                                if (!board[posXBefore][posYBefore].equals("B") && !board[posXBefore][posYBefore].equals("W")) {
+                                                    //cridar funcio moure
+                                                    checkers.moveChecker(posX, posY, posXBefore, posYBefore, board);
+                                                }
+                                            } else {
+                                                if (!board[posXBefore][posYBefore].equals("B") && !board[posXBefore][posYBefore].equals("W") &&
+                                                        !board[posXBefore + 1][posYBefore - 1].equals("W") && !board[posXBefore + 1][posYBefore - 1].equals("?")) {
+                                                    //cridar funcio moure
+                                                    checkers.moveChecker(posX, posY, posXBefore, posYBefore, board);
+                                                } else {
+                                                    System.out.println("You have to choose a valid position.");
+                                                }
                                             }
                                         }
                                     }
                                 }
+                            } else {
+                                System.out.println("You have to choose a valid position.");
                             }
-                        }else{
-                            System.out.println("You have to choose a valid position.");
+                        } else {
+                            System.out.println("You have to choose a valid checker.");
                         }
                     } else {
                         System.out.println("You have to choose a valid checker.");
                     }
-                }else {
-                    System.out.println("You have to choose a valid checker.");
                 }
             }
         }
         keyboard.close();
+        if(board!=null) {
+            showBoard(board);
+        }
         checkers.winner(checkers.getWhite(),checkers.getBlack());
-        */
+
     }
 }
