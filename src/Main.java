@@ -63,17 +63,17 @@ public class Main {
     public static void main(String args[]) throws CloneNotSupportedException {
         int posX, posY, posXBefore, posYBefore, nivell =0;
         Scanner keyboard = new Scanner(System.in);
-        int opcio=0;
+        /*int opcio=0;
 
         while(opcio!=1 && opcio!=2 && opcio!=3){
             System.out.println("Tria una heuristica per a jugar: \n\n");
-            System.out.println("\t1-Fitxes blocades");
-            System.out.println("\t2-Fitxes no blocades de cada jugador");
+            System.out.println("\t1-Fitxes totals de cada jugador");
+            System.out.println("\t2-Fitxes blocades de cada jugador");
             System.out.println("\t3-Fitxes pels voltants per a no ser matades");
             opcio=keyboard.nextInt();
-        }
+        }*/
 
-        checkers = new Checkers(opcio, board);
+        checkers = new Checkers(board);
         iniciali(board);
 
         /*List<String[][]> aux = checkers.newBoard(checkers.getBlack(),checkers.getWhite(),board);
@@ -89,7 +89,7 @@ public class Main {
         while(checkers.notEnd(checkers.getWhite(),checkers.getBlack())) {
             if(board!=null) {
                 showBoard(board);
-
+            }
                 System.out.println();
                 if (checkers.getBlack().isTurn()) {
                /* System.out.println("Player 2: Choose a black checker. Put the row.");
@@ -164,14 +164,14 @@ public class Main {
                 System.out.println("Fitxes Negres: "+checkers.getBlack().getPiece().getQueenPieces());
                 System.out.println("Fitxes Blanques Blocades: "+checkers.getWhite().getPiece().getBloqiedPieces());
                 System.out.println("Fitxes Negres Blocades: "+checkers.getBlack().getPiece().getBloqiedPieces());*/
-                    Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite(), checkers.getBlack());
-                    board = checkers.clone(aux.getTaulell());
-                    checkers.pieceCount(board, checkers.getWhite(), checkers.getBlack());
-                    if (checkers.getBlack().isTurn()) {
-                        checkers.changeTurn(checkers.getWhite(), checkers.getBlack());
+                    Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite().clone(), checkers.getBlack().clone(),1);
+                    if (aux.getTaulell() != null) {
+                        board = checkers.clone(aux.getTaulell());
                     }
+                    checkers.pieceCount(board, checkers.getWhite(), checkers.getBlack());
+                    checkers.changeTurn(checkers.getWhite(), checkers.getBlack());
                 } else {
-                    System.out.println("Player 1: Choose a white checker. Put the row.");
+                    /*System.out.println("Player 1: Choose a white checker. Put the row.");
                     posX = keyboard.nextInt() - 1;
                     System.out.println("Player 1: Choose a white checker. Put the column.");
                     keyboard.nextLine();
@@ -228,7 +228,7 @@ public class Main {
                                             }
                                         }
                                     }
-                                }*/
+                                }
 
                             } else {
                                 System.out.println("You have to choose a valid position.");
@@ -239,8 +239,14 @@ public class Main {
                     } else {
                         System.out.println("You have to choose a valid checker.");
                     }
+            }*/
+                    Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite().clone(), checkers.getBlack().clone(),3);
+                    if (aux.getTaulell() != null) {
+                        board = checkers.clone(aux.getTaulell());
+                    }
+                    checkers.pieceCount(board, checkers.getWhite(), checkers.getBlack());
+                    checkers.changeTurn(checkers.getWhite(), checkers.getBlack());
                 }
-            }
         }
         keyboard.close();
         if(board!=null) {

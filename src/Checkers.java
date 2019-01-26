@@ -5,14 +5,12 @@ import java.util.List;
 
 public class Checkers {
     private Player black , white;
-    private int opcio;
     private static int LEVEL_MAX=6;
     private String[][] board;
 
-    public Checkers(int opcio, String[][] board){
+    public Checkers(String[][] board){
         black= new Player("Black");
         white = new Player("White");
-        this.opcio=opcio;
         this.board=clone(board);
     }
 
@@ -249,13 +247,13 @@ public class Checkers {
     }
 
     public int heuristica1(Player num1, Player num2){
-        if(num2.isTurn())return num1.getPiece().getBloqiedPieces()*10 - num1.getPiece().getQueenPieces()*10;
-        else return num2.getPiece().getBloqiedPieces()*10 - num2.getPiece().getQueenPieces()*10;
+        if(num2.isTurn())return (num2.getPiece().getNumberPieces() - num1.getPiece().getNumberPieces())*10;
+        else return (-num2.getPiece().getNumberPieces() + num1.getPiece().getNumberPieces())*10;
     }
 
     public int heuristica2(Player num1, Player num2){
-        if(num2.isTurn())return num2.getPiece().getNumberPieces()-num1.getPiece().getNumberPieces();
-        else return num1.getPiece().getNumberPieces()-num2.getPiece().getNumberPieces();
+        if(num2.isTurn())return (num2.getPiece().getBloqiedPieces()-num1.getPiece().getNumberPieces())*10;
+        else return (-num2.getPiece().getBloqiedPieces()+num1.getPiece().getNumberPieces())*10;
     }
 
     public int heuristica3(String[][] board,Player num1, Player num2){
@@ -272,11 +270,11 @@ public class Checkers {
                }
            }
        }
-       if(num2.isTurn()) return cantoN-cantoB;
-       else return cantoB-cantoN;
+       if(num1.getType().equals("Black")) return (cantoN-cantoB)*10;
+       else return (-cantoN+cantoB)*10;
     }
 
-    public Node minimax(String[][] board, int nivell, Player jugador, Player maquina) throws CloneNotSupportedException {
+    public Node minimax(String[][] board, int nivell, Player jugador, Player maquina, int opcio) throws CloneNotSupportedException {
         Node retorn = new Node(0,null,null,null);
         String [][] aux, taulell_return=null;
         int mes_infinit= Integer.MAX_VALUE, menys_infinit= Integer.MIN_VALUE;
@@ -311,26 +309,27 @@ public class Checkers {
                 while(i < taulells.size()){
                     aux=taulells.get(i);
                     try {
-                        retorn=minimax(clone(aux),nivell+1,jugador,maquina);
+                        retorn=minimax(clone(aux),nivell+1,jugador,maquina, opcio);
                     } catch (CloneNotSupportedException e) {
                         e.printStackTrace();
                     }
 
                     if(nivell%2==0){
-                        if((retorn.getHeuristica())>heuristic_value){
+                        if((retorn.getHeuristica())>=heuristic_value){
                             heuristic_value=retorn.getHeuristica();
                             taulell_return=clone(aux);
                         }
 
                     }
                     else{
-                        if(retorn.getHeuristica()<heuristic_value) {
+                        if(retorn.getHeuristica()<=heuristic_value) {
                             heuristic_value = retorn.getHeuristica();
                             taulell_return = clone(aux);
                         }
                     }
                     i++;
                 }
+
                 if(taulells.size()==0){
                     int val;
                     if(opcio==1){
