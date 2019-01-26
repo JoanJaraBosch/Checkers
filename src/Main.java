@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -63,15 +64,24 @@ public class Main {
     public static void main(String args[]) throws CloneNotSupportedException {
         int posX, posY, posXBefore, posYBefore, nivell =0;
         Scanner keyboard = new Scanner(System.in);
-        /*int opcio=0;
+        List<Long> tempsMinimaxBlanc= new LinkedList<>(), tempsMinimaxNegre= new LinkedList<>();
+        int opcio=0, opcio2=0;
 
         while(opcio!=1 && opcio!=2 && opcio!=3){
-            System.out.println("Tria una heuristica per a jugar: \n\n");
+            System.out.println("Tria una heuristica per a jugar amb les fitxes blanques: \n\n");
             System.out.println("\t1-Fitxes totals de cada jugador");
             System.out.println("\t2-Fitxes blocades de cada jugador");
             System.out.println("\t3-Fitxes pels voltants per a no ser matades");
             opcio=keyboard.nextInt();
-        }*/
+        }
+
+        while(opcio2!=1 && opcio2!=2 && opcio2!=3){
+            System.out.println("Tria una heuristica per a jugar amb les fitxes negres: \n\n");
+            System.out.println("\t1-Fitxes totals de cada jugador");
+            System.out.println("\t2-Fitxes blocades de cada jugador");
+            System.out.println("\t3-Fitxes pels voltants per a no ser matades");
+            opcio2=keyboard.nextInt();
+        }
 
         checkers = new Checkers(board);
         iniciali(board);
@@ -164,7 +174,10 @@ public class Main {
                 System.out.println("Fitxes Negres: "+checkers.getBlack().getPiece().getQueenPieces());
                 System.out.println("Fitxes Blanques Blocades: "+checkers.getWhite().getPiece().getBloqiedPieces());
                 System.out.println("Fitxes Negres Blocades: "+checkers.getBlack().getPiece().getBloqiedPieces());*/
-                    Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite().clone(), checkers.getBlack().clone(),1);
+                    long startTime = System.currentTimeMillis();
+                    Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite().clone(), checkers.getBlack().clone(),opcio2);
+                    long endTime = System.currentTimeMillis() - startTime;
+                    tempsMinimaxNegre.add(endTime/1000);
                     if (aux.getTaulell() != null) {
                         board = checkers.clone(aux.getTaulell());
                     }
@@ -240,7 +253,10 @@ public class Main {
                         System.out.println("You have to choose a valid checker.");
                     }
             }*/
-                    Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite().clone(), checkers.getBlack().clone(),3);
+                    long startTime = System.currentTimeMillis();
+                    Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite().clone(), checkers.getBlack().clone(),opcio);
+                    long endTime = System.currentTimeMillis() - startTime;
+                    tempsMinimaxBlanc.add(endTime/1000);
                     if (aux.getTaulell() != null) {
                         board = checkers.clone(aux.getTaulell());
                     }
@@ -253,6 +269,19 @@ public class Main {
             showBoard(board);
         }
         checkers.winner(checkers.getWhite(),checkers.getBlack());
+        int totalB=0, totalN=0;
+        for(int i=0;i<tempsMinimaxBlanc.size(); i++) {
+            System.out.println("La heuristica " + opcio + " utilitzada en el minimax de les fitxes blanques ha tardat tardat: " +tempsMinimaxBlanc.get(i)+ " segons en el torn: "+i);
+            totalB+=tempsMinimaxBlanc.get(i);
+        }
+
+        for(int i=0;i<tempsMinimaxNegre.size(); i++) {
+            System.out.println("La heuristica " + opcio2 + " utilitzada en el minimax de les fitxes negres ha tardat tardat: " +tempsMinimaxNegre.get(i)+ " segons en el torn: "+i);
+            totalN+=tempsMinimaxNegre.get(i);
+        }
+
+        System.out.println("Temps total fitxes negres: "+totalN);
+        System.out.println("Temps total fitxes BLANQUES: "+totalB);
 
     }
 }
