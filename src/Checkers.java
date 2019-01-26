@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Checkers {
     private Player black , white;
-    private static int LEVEL_MAX=6;
+    private static int LEVEL_MAX=5;
     private String[][] board;
 
     public Checkers(String[][] board){
