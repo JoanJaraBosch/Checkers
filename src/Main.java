@@ -21,7 +21,7 @@ public class Main {
         int posicioX= posx-xBef;
         int posicioY = posy-yBef;
 
-        if(board[xBef][yBef].equals("W")) {
+        if(board[posx][posy].equals("W")) {
             if (posicioX == 1) {
                 if (posicioY == 1 || posicioY == -1) {
                     if (board[xBef][yBef].equals("?")) {
