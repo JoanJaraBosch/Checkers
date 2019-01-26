@@ -177,7 +177,7 @@ public class Main {
                     long startTime = System.currentTimeMillis();
                     Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite().clone(), checkers.getBlack().clone(),opcio2);
                     long endTime = System.currentTimeMillis() - startTime;
-                    tempsMinimaxNegre.add(endTime/1000);
+                    tempsMinimaxNegre.add(endTime);
                     if (aux.getTaulell() != null) {
                         board = checkers.clone(aux.getTaulell());
                     }
@@ -256,7 +256,7 @@ public class Main {
                     long startTime = System.currentTimeMillis();
                     Node aux = checkers.minimax(checkers.clone(board), 0, checkers.getWhite().clone(), checkers.getBlack().clone(),opcio);
                     long endTime = System.currentTimeMillis() - startTime;
-                    tempsMinimaxBlanc.add(endTime/1000);
+                    tempsMinimaxBlanc.add(endTime);
                     if (aux.getTaulell() != null) {
                         board = checkers.clone(aux.getTaulell());
                     }
@@ -271,17 +271,17 @@ public class Main {
         checkers.winner(checkers.getWhite(),checkers.getBlack());
         int totalB=0, totalN=0;
         for(int i=0;i<tempsMinimaxBlanc.size(); i++) {
-            System.out.println("La heuristica " + opcio + " utilitzada en el minimax de les fitxes blanques ha tardat tardat: " +tempsMinimaxBlanc.get(i)+ " segons en el torn: "+i);
+            System.out.println("La heuristica " + opcio + " utilitzada en el minimax de les fitxes blanques ha tardat tardat: " +tempsMinimaxBlanc.get(i)+ " milisegons en el torn: "+i);
             totalB+=tempsMinimaxBlanc.get(i);
         }
 
         for(int i=0;i<tempsMinimaxNegre.size(); i++) {
-            System.out.println("La heuristica " + opcio2 + " utilitzada en el minimax de les fitxes negres ha tardat tardat: " +tempsMinimaxNegre.get(i)+ " segons en el torn: "+i);
+            System.out.println("La heuristica " + opcio2 + " utilitzada en el minimax de les fitxes negres ha tardat tardat: " +tempsMinimaxNegre.get(i)+ " milisegons en el torn: "+i);
             totalN+=tempsMinimaxNegre.get(i);
         }
 
         System.out.println("Temps total fitxes negres: "+totalN);
-        System.out.println("Temps total fitxes BLANQUES: "+totalB);
+        System.out.println("Temps total fitxes blanques: "+totalB);
 
     }
 }
